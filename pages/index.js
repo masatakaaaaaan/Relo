@@ -93,7 +93,7 @@ const BeautySalonApp = () => {
   // ログイン画面
   const LoginScreen = () => {
     const [loginData, setLoginData] = useState({ email: '', password: '' });
-    const [loginType, setLoginType] = useState('customer'); // 'customer' or 'admin'
+    const [loginType, setLoginType] = useState('customer');
     const [error, setError] = useState('');
 
     const handleSubmit = (e) => {
@@ -234,7 +234,6 @@ const BeautySalonApp = () => {
         setError('パスワードが一致しません');
         return;
       }
-      // 実際の実装では、ここでAPI呼び出し
       setShowRegistration(false);
       alert('会員登録が完了しました！');
     };
@@ -335,7 +334,6 @@ const BeautySalonApp = () => {
 
     const handleSubmit = (e) => {
       e.preventDefault();
-      // 実際の実装では、ここでAPI呼び出し
       alert('クーポンが作成されました！');
       setShowCouponForm(false);
     };
@@ -435,7 +433,6 @@ const BeautySalonApp = () => {
   // 顧客向けダッシュボード
   const CustomerDashboard = () => (
     <div className="space-y-8">
-      {/* ウェルカムセクション */}
       <div className="bg-gradient-to-r from-rose-500 to-pink-600 rounded-2xl shadow-2xl p-8 text-white">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
@@ -470,7 +467,6 @@ const BeautySalonApp = () => {
 
       {activeTab === 'profile' && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* プロフィール情報 */}
           <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
             <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
               <User className="w-6 h-6 mr-3 text-rose-600" />
@@ -493,7 +489,6 @@ const BeautySalonApp = () => {
               </div>
             </div>
             
-            {/* QRコードセクション */}
             <div className="border-t border-gray-200 pt-6 mt-6">
               <h4 className="font-bold text-gray-900 mb-4 flex items-center">
                 <QrCode className="w-5 h-5 mr-2 text-rose-600" />
@@ -513,7 +508,6 @@ const BeautySalonApp = () => {
             </div>
           </div>
 
-          {/* 施術履歴 */}
           <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
             <h4 className="font-bold text-gray-900 mb-6 flex items-center">
               <Star className="w-5 h-5 mr-2 text-rose-600" />
@@ -549,3 +543,376 @@ const BeautySalonApp = () => {
                               alt={`施術写真 ${index + 1}`}
                               className="w-full h-24 object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity shadow-sm group-hover:shadow-md"
                               onClick={() => window.open(image, '_blank')}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'coupons' && (
+        <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+          <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
+            <Gift className="w-6 h-6 mr-3 text-rose-600" />
+            ご利用可能クーポン
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {coupons.filter(c => c.forRank === currentUser.rank).map(coupon => (
+              <div key={coupon.id} className="border-2 border-dashed border-rose-300 rounded-2xl p-6 bg-gradient-to-br from-rose-50 to-pink-50 hover:shadow-lg transition-all">
+                <div className="flex justify-between items-center">
+                  <div className="flex-1">
+                    <div className="font-bold text-gray-900 text-lg">{coupon.name}</div>
+                    <div className="text-sm text-gray-600 mt-1">
+                      {coupon.minSpend.toLocaleString()}円以上のご利用で適用
+                    </div>
+                    <div className="text-xs text-gray-500 mt-2">
+                      有効期限: {coupon.validUntil}
+                    </div>
+                  </div>
+                  <div className="text-right ml-4">
+                    <div className="text-4xl font-bold text-rose-600">{coupon.discount}%</div>
+                    <div className="text-sm font-medium text-rose-600">OFF</div>
+                  </div>
+                </div>
+                <div className="mt-4 pt-4 border-t border-rose-200">
+                  <button className="w-full py-2 px-4 bg-gradient-to-r from-rose-500 to-pink-500 text-white rounded-lg font-medium hover:from-rose-600 hover:to-pink-600 transition-all">
+                    クーポンを使用
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
+  // 管理者向けダッシュボード
+  const AdminDashboard = () => (
+    <div className="space-y-8">
+      <div className="grid grid-cols-3 gap-8">
+        <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+          <div className="flex items-center">
+            <div className="p-3 bg-blue-100 rounded-xl">
+              <Users className="w-8 h-8 text-blue-600" />
+            </div>
+            <div className="ml-4">
+              <div className="text-3xl font-bold text-gray-900">{customers.length}</div>
+              <div className="text-sm text-gray-600">総顧客数</div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+          <div className="flex items-center">
+            <div className="p-3 bg-green-100 rounded-xl">
+              <TrendingUp className="w-8 h-8 text-green-600" />
+            </div>
+            <div className="ml-4">
+              <div className="text-3xl font-bold text-gray-900">¥{customers.reduce((sum, c) => sum + c.totalSpent, 0).toLocaleString()}</div>
+              <div className="text-sm text-gray-600">総売上</div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+          <div className="flex items-center">
+            <div className="p-3 bg-rose-100 rounded-xl">
+              <Gift className="w-8 h-8 text-rose-600" />
+            </div>
+            <div className="ml-4">
+              <div className="text-3xl font-bold text-gray-900">{coupons.length}</div>
+              <div className="text-sm text-gray-600">配布クーポン</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {activeTab === 'customers' && (
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100">
+          <div className="p-8">
+            <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
+              <Users className="w-6 h-6 mr-3 text-rose-600" />
+              顧客管理
+            </h3>
+            <div className="overflow-x-auto">
+              <table className="min-w-full">
+                <thead>
+                  <tr className="border-b border-gray-200">
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">顧客情報</th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">ランク</th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">累計利用金額</th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">来店回数</th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">QRコード</th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">アクション</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {customers.map(customer => (
+                    <tr key={customer.id} className="hover:bg-gray-50 transition-colors">
+                      <td className="px-6 py-4">
+                        <div>
+                          <div className="font-semibold text-gray-900">{customer.name}</div>
+                          <div className="text-sm text-gray-600">{customer.email}</div>
+                          <div className="text-sm text-gray-600">{customer.phone}</div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className={`inline-flex px-3 py-1 text-xs font-medium rounded-full ${getRankColor(customer.rank)}`}>
+                          {getRankIcon(customer.rank)} {customer.rank.toUpperCase()}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 font-semibold text-gray-900">
+                        ¥{customer.totalSpent.toLocaleString()}
+                      </td>
+                      <td className="px-6 py-4 text-gray-900">
+                        {customer.visits}回
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center">
+                          <QrCode className="w-4 h-4 mr-2 text-gray-400" />
+                          <span className="text-sm font-mono text-gray-900">{customer.qrCode}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex space-x-2">
+                          <button className="text-rose-600 hover:text-rose-800 font-medium text-sm">編集</button>
+                          <button className="text-blue-600 hover:text-blue-800 font-medium text-sm">QR読取</button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'qr-reader' && (
+        <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+          <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
+            <QrCode className="w-6 h-6 mr-3 text-rose-600" />
+            QRコード読み取り・売上登録
+          </h3>
+          <div className="max-w-2xl mx-auto">
+            <div className="border-2 border-dashed border-gray-300 rounded-2xl p-12 text-center mb-8">
+              <QrCode className="w-20 h-20 mx-auto text-gray-400 mb-4" />
+              <p className="text-gray-600 mb-4 text-lg">顧客のQRコードをスキャンしてください</p>
+              <button className="bg-gradient-to-r from-rose-500 to-pink-500 text-white px-8 py-3 rounded-xl hover:from-rose-600 hover:to-pink-600 transition-all transform hover:scale-105 shadow-lg font-medium">
+                <Camera className="w-5 h-5 inline mr-2" />
+                カメラを起動
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">施術内容</label>
+                <input type="text" className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-rose-500 focus:border-transparent" placeholder="例: カット + カラー" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">料金</label>
+                <input type="number" className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-rose-500 focus:border-transparent" placeholder="0" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">担当者</label>
+                <select className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-rose-500 focus:border-transparent">
+                  <option>山田</option>
+                  <option>佐々木</option>
+                  <option>田中</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">施術写真</label>
+                <input 
+                  type="file" 
+                  multiple 
+                  accept="image/*"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-rose-500 focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-rose-50 file:text-rose-700 hover:file:bg-rose-100"
+                />
+              </div>
+            </div>
+            <div className="mt-6">
+              <label className="block text-sm font-medium text-gray-700 mb-2">メモ</label>
+              <textarea className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-rose-500 focus:border-transparent" rows="4" placeholder="施術に関するメモ"></textarea>
+            </div>
+            <button className="w-full mt-6 bg-gradient-to-r from-green-500 to-emerald-500 text-white py-4 px-6 rounded-xl hover:from-green-600 hover:to-emerald-600 transition-all transform hover:scale-105 shadow-lg font-medium text-lg">
+              売上を登録
+            </button>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'coupon-management' && (
+        <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-xl font-bold text-gray-900 flex items-center">
+              <Gift className="w-6 h-6 mr-3 text-rose-600" />
+              クーポン管理
+            </h3>
+            <button
+              onClick={() => setShowCouponForm(true)}
+              className="bg-gradient-to-r from-rose-500 to-pink-500 text-white px-6 py-3 rounded-xl hover:from-rose-600 hover:to-pink-600 transition-all transform hover:scale-105 shadow-lg font-medium flex items-center"
+            >
+              <Plus className="w-5 h-5 mr-2" />
+              新しいクーポンを作成
+            </button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {coupons.map(coupon => (
+              <div key={coupon.id} className="border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all">
+                <div className="flex justify-between items-start mb-4">
+                  <div className="flex-1">
+                    <div className="font-bold text-gray-900 text-lg">{coupon.name}</div>
+                    <div className="text-sm text-gray-600 mt-1">
+                      対象ランク: <span className="font-medium">{coupon.forRank.toUpperCase()}</span>
+                    </div>
+                    <div className="text-sm text-gray-600">
+                      最低利用金額: <span className="font-medium">¥{coupon.minSpend.toLocaleString()}</span>
+                    </div>
+                    <div className="text-sm text-gray-500 mt-2">有効期限: {coupon.validUntil}</div>
+                  </div>
+                  <div className="text-right ml-4">
+                    <div className="text-3xl font-bold text-rose-600">{coupon.discount}%OFF</div>
+                  </div>
+                </div>
+                <div className="flex justify-end space-x-2 pt-4 border-t border-gray-100">
+                  <button className="text-blue-600 hover:text-blue-800 font-medium text-sm">編集</button>
+                  <button className="text-red-600 hover:text-red-800 font-medium text-sm">削除</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'newsletter' && (
+        <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+          <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
+            <Mail className="w-6 h-6 mr-3 text-rose-600" />
+            メルマガ配信
+          </h3>
+          <div className="max-w-2xl mx-auto space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">件名</label>
+              <input type="text" className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-rose-500 focus:border-transparent" placeholder="メルマガの件名" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">配信対象</label>
+              <select className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-rose-500 focus:border-transparent">
+                <option>全顧客</option>
+                <option>ブロンズ会員</option>
+                <option>シルバー会員</option>
+                <option>ゴールド会員</option>
+                <option>プラチナ会員</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">本文</label>
+              <textarea className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-rose-500 focus:border-transparent" rows="8" placeholder="メルマガの内容を入力してください"></textarea>
+            </div>
+            <button className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-4 px-6 rounded-xl hover:from-blue-600 hover:to-indigo-600 transition-all transform hover:scale-105 shadow-lg font-medium text-lg">
+              <Mail className="w-5 h-5 inline mr-2" />
+              メルマガを配信
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
+  const customerTabs = [
+    { id: 'profile', label: 'マイプロフィール', icon: User },
+    { id: 'coupons', label: 'クーポン', icon: Gift }
+  ];
+
+  const adminTabs = [
+    { id: 'customers', label: '顧客管理', icon: Users },
+    { id: 'qr-reader', label: 'QR読取・売上登録', icon: QrCode },
+    { id: 'coupon-management', label: 'クーポン管理', icon: Gift },
+    { id: 'newsletter', label: 'メルマガ配信', icon: Mail }
+  ];
+
+  const tabs = isAdmin ? adminTabs : customerTabs;
+
+  if (!isLoggedIn) {
+    if (showRegistration) {
+      return <RegistrationScreen />;
+    }
+    return <LoginScreen />;
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      <header className="bg-white shadow-lg border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-20">
+            <div className="flex items-center">
+              <Crown className="w-10 h-10 text-rose-600 mr-4" />
+              <div>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-rose-600 to-purple-600 bg-clip-text text-transparent">
+                  Beauty Salon CRM
+                </h1>
+                <p className="text-sm text-gray-600">プレミアムロイヤリティサービス</p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-4">
+              {currentUser && (
+                <div className="text-right">
+                  <div className="font-medium text-gray-900">{currentUser.name}様</div>
+                  <div className="text-sm text-gray-600">
+                    {isAdmin ? '管理者' : `${currentUser.rank.toUpperCase()}会員`}
+                  </div>
+                </div>
+              )}
+              <button
+                onClick={handleLogout}
+                className="px-6 py-2 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-xl hover:from-gray-600 hover:to-gray-700 transition-all font-medium"
+              >
+                ログアウト
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <nav className="mb-8">
+          <div className="border-b border-gray-200 bg-white rounded-t-2xl">
+            <div className="flex space-x-8 overflow-x-auto px-6 py-2">
+              {tabs.map((tab) => {
+                const IconComponent = tab.icon;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`py-4 px-2 border-b-2 font-medium text-sm whitespace-nowrap flex items-center transition-all ${
+                      activeTab === tab.id
+                        ? 'border-rose-500 text-rose-600'
+                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    }`}
+                  >
+                    <IconComponent className="w-5 h-5 mr-2" />
+                    {tab.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </nav>
+
+        {isAdmin ? <AdminDashboard /> : <CustomerDashboard />}
+      </div>
+
+      {showCouponForm && <CouponForm />}
+    </div>
+  );
+};
+
+export default BeautySalonApp;
