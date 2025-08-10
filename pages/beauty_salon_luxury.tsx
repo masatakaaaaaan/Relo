@@ -738,7 +738,7 @@ const BeautySalonApp = () => {
             </div>
             <div className="mt-6">
               <label className="block text-sm font-medium text-slate-700 mb-2">メモ</label>
-              <textarea className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-500 focus:border-transparent bg-white" rows="4" placeholder="施術に関するメモ"></textarea>
+              <textarea className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-500 focus:border-transparent bg-white" rows={4} placeholder="施術に関するメモ"></textarea>
             </div>
             <button className="w-full mt-6 bg-gradient-to-r from-emerald-600 to-emerald-800 text-white py-4 px-6 rounded-xl hover:from-emerald-700 hover:to-emerald-900 transition-all transform hover:scale-105 shadow-lg font-medium text-lg">
               売上を登録
