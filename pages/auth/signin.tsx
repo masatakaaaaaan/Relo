@@ -17,7 +17,8 @@ export default function Signup() {
     const { error } = await supabase.auth.signUp({ email, password });
     setLoading(false);
     if (error) return setErr(error.message);
-    // メール確認オフのプロジェクトなら即ログイン状態。オンなら確認メール送付。
+
+    // 確認メールをOFFにしていれば即ログイン状態。ONならメール送付のみ。
     r.push('/dashboard');
   };
 
